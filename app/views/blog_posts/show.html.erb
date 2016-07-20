@@ -1,37 +1,52 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+	<div class="col-md-8 col-md-offset-2">
+		<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @blog_post.title %>
-</p>
+		<h2>
+		  <%= @blog_post.title %>
+		</h2>
 
-<p>
-  <strong>Author:</strong>
-  <%= @blog_post.user.email %>
-</p>
-
-<p>
-  <strong>Blog entry:</strong>
-  <%= @blog_post.blog_entry %>
-</p>
-
-<%= link_to 'Edit', edit_blog_post_path(@blog_post) %> |
-<%= link_to 'Back', blog_posts_path %>
-
-<div>
-	<%= render 'comments/form' %>
-</div>
-
-<div>
-	<% @blog_post.comments.each do |comment| %>
 		<p>
-			<%= comment.user.email %> says...<br />
-			<%= comment.comment_entry %>
+		  <i class="fa fa-pencil-square-o"></i> <em>posted by: </em>
+		  <strong><%= @blog_post.user.username %></strong>
 		</p>
-	<% end %>
+
+		<p>
+			<i class="fa fa-clock-o"></i><em> at <%= @blog_post.created_at.strftime("%I:%M%p on %m/%d/%Y") %></em>
+		</p>
+
+		<p>
+		  <%= @blog_post.blog_entry.html_safe %>
+		</p>
+
+		<% if current_user == @blog_post.user %>
+			<p>
+				<%= link_to 'Edit', edit_blog_post_path(@blog_post), class: "btn btn-warning" %> 
+			</p>
+		<% end %>
+
+		<div class="well">
+			<div id="comment_form">
+				<%= render 'comments/form' %>
+			</div>
+			<div class="a-lil-space">
+			</div>
+
+
+			<div id="comments">
+				<% @blog_post.comments.each do |comment| %>
+					<p>
+						<em><strong><%= comment.user.email %></strong> said...</em>
+					</p>
+					<p>
+						<%= comment.comment_entry.html_safe %>
+					</p>
+					<p>
+						<small><em>posted at <%= comment.created_at.strftime("%I:%M%p on %m/%d/%Y") %></em></small>
+					</p>
+					<hr />
+				<% end %>
+			</div>
+		</div>
+	</div>
 </div>
-
-
-
-
-
